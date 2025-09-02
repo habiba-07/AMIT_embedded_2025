@@ -82,7 +82,7 @@ bool SDB_ReadEntry (uint32 id){
         tmp = tmp->next;
     }
     //if id not found it will return false
-    printf("ID not Found");
+    printf("ID not Found\n");
     return FALSE;
 
 }
