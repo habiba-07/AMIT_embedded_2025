@@ -9,7 +9,9 @@
 #define MAX_STUDENTS    10
 #define MIN_STUDENTS    3
 
+//Create empty linked list
 NODE_t * head = NULL;
+//counter for students in list
 static uint8 student_count = 0;
 
 
@@ -21,12 +23,10 @@ uint8 SDB_GetUsedSize(){
     return student_count;
 }
 bool SDB_AddEntry(){
+    //check if list is full
     if(SDB_IsFull()) return FALSE;
+    //create new object type student
     STUDENT_t newStudent;
-    // Course1_ID, 
-//Course1_grade, Course2_ID, 
-//Course2_grade, Course3_ID, and 
-//Course3_grade
     puts("Enter Student ID: ");
     scanf("%d",&newStudent.Student_ID);
     puts("Enter Student year: ");
@@ -37,29 +37,39 @@ bool SDB_AddEntry(){
     scanf("%d %d",&newStudent.Course2_grade,&newStudent.Course2_ID);
     puts("Enter course3 grade and ID: ");
     scanf("%d %d",&newStudent.Course3_grade,&newStudent.Course3_ID);
+    //create new node in linked list
     NODE_t * newnode = (NODE_t *) malloc(sizeof(NODE_t));
     newnode->student_data = newStudent;
     newnode->next = head;
     head = newnode;
+    //increment student count by 1
     student_count++;
     return TRUE;
 }
 void SDB_DeletEntry (uint32 id){
     NODE_t * tmp = head;
     NODE_t * prev = NULL;
-    while(tmp->student_data.Student_ID != id){
-        prev = tmp; 
+    // Traverse to find the node with the matching ID
+    while (tmp != NULL && tmp->student_data.Student_ID != id) {
+        prev = tmp;
         tmp = tmp->next;
     }
-    prev = head;
-    while(prev->student_data.Student_ID < id-1){
-        prev = prev->next;
+    // If the node wasn't found
+    if (tmp == NULL) {
+        printf("Student ID %u not found.\n", id);
+        return;
     }
-    prev->next = tmp;
+    // If the node to delete is the head
+    if (prev == NULL) {
+        head = tmp->next;
+    } else {
+        prev->next = tmp->next;
+    }
     student_count--;
 }
 bool SDB_ReadEntry (uint32 id){
     NODE_t * tmp = head;
+    //traverse if ID is true it will return true
     while(tmp != NULL){
         if(tmp->student_data.Student_ID == id){
             printf("student ID: %d\n",tmp->student_data.Student_ID);
@@ -71,31 +81,25 @@ bool SDB_ReadEntry (uint32 id){
         }
         tmp = tmp->next;
     }
+    //if id not found it will return false
+    printf("ID not Found");
     return FALSE;
 
 }
 void SDB_GetList (uint8 * count, uint32 * list){
     NODE_t *tmp = head;
-    uint8 i = 0;
-
-    while(tmp != NULL && i < 10){
-        list[i++] = tmp->student_data.Student_ID;
+    uint8 counter = 0;
+    //traverse till end of list
+    while(tmp != NULL && counter < 10){
+        list[counter++] = tmp->student_data.Student_ID;
         tmp = tmp->next;
     }
-
-    *count = i;
+    //count = counter in loop
+    *count = counter;
+    //function to print array
     printArray(list, *count);
-    /**count = student_count;
-    NODE_t * tmp = head;
-    uint8 i = 0;
-    while(tmp != NULL){
-        list[i] = tmp->student_data.Student_ID;
-        i++;
-        tmp = tmp->next; 
-    }
-    printArray(list,*count);*/
-
 }
+
 bool SDB_IsIdExist (uint32 id){
     NODE_t * tmp = head;
     while(tmp != NULL){

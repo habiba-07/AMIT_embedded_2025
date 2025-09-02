@@ -37,6 +37,9 @@ void SDB_DeletEntry (uint32 id) ;
 bool SDB_ReadEntry (uint32 id);
 void SDB_GetList (uint8 * count, uint32 * list);
 bool SDB_IsIdExist (uint32 id);
+/***************App fucntions*******************/
+void SDB_APP ();
+void SDB_action (uint8 choice);
 /******************helping functions */
 void printArray(int arr[], int size);
 #endif
